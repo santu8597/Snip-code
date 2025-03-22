@@ -151,8 +151,7 @@ export function CodePreview({ code, language }: CodePreviewProps) {
       } else if (language === "html") {
         // For HTML, directly insert into the root
         const rootEl = doc.getElementById("root")
-        if(rootEl)
-        rootEl.innerHTML = code
+        if (rootEl) rootEl.innerHTML = code
       } else if (language === "css") {
         // For CSS, add a style tag and some demo elements
         const styleEl = doc.createElement("style")
@@ -160,8 +159,8 @@ export function CodePreview({ code, language }: CodePreviewProps) {
         doc.head.appendChild(styleEl)
 
         const rootEl = doc.getElementById("root")
-        if(rootEl)
-        rootEl.innerHTML = `
+        if (rootEl)
+          rootEl.innerHTML = `
           <div class="preview-container">
             <h1>CSS Preview</h1>
             <p>This is a paragraph with the applied CSS.</p>
@@ -182,7 +181,7 @@ export function CodePreview({ code, language }: CodePreviewProps) {
       console.error("Error preparing preview:", error)
       const rootEl = doc.getElementById("root")
       if (rootEl) {
-        rootEl.innerHTML = `<div class="preview-error">Error preparing preview: ${error.message}</div>`
+        rootEl.innerHTML = `<div class="preview-error">Error preparing preview:</div>`
       }
     }
 
@@ -234,14 +233,13 @@ export function CodePreview({ code, language }: CodePreviewProps) {
             <Button variant="outline" size="sm" className="absolute top-2 right-2 z-10" onClick={refreshPreview}>
               Refresh
             </Button>
-            {/* Update the iframe sandbox attribute to allow more permissions */}
-            {/* Replace the iframe element with this updated version */}
+            {/* Updated iframe with enhanced sandbox permissions */}
             <iframe
               key={iframeKey}
               srcDoc={getHtmlContent()}
               className="w-full border-0"
               style={{ height: `${iframeHeight}px`, minHeight: "200px" }}
-              sandbox="allow-scripts allow-same-origin"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
               title="Code Preview"
             />
           </div>

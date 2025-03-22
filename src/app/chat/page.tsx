@@ -10,8 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 import ReactMarkdown from "react-markdown"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Weather } from "@/components/utils/weather"
+
 import { useToast } from "@/components/ui/use-toast"
 import { CodeBlockParser } from "@/components/utils/code-block-parser"
 
@@ -106,23 +105,7 @@ export default function Chat() {
     setActivePdf(url === activePdf ? null : url)
   }
 
-  const handleCopyToClipboard = (text: string) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        toast({
-          title: "Copied to clipboard!",
-        })
-      })
-      .catch((err) => {
-        toast({
-          variant: "destructive",
-          title: "Failed to copy!",
-          description: err.message,
-        })
-      })
-  }
-
+ 
   // Check if a message contains code blocks
   const hasCodeBlocks = (content: string) => {
     return /```(\w+)?\n([\s\S]*?)```/g.test(content)
@@ -252,45 +235,8 @@ export default function Chat() {
                       ) : (
                         <ReactMarkdown>{message.content}</ReactMarkdown>
                       )}
-                      {/* {message.role !== "user" && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="absolute top-1 right-1 text-muted-foreground hover:text-primary transition-colors"
-                          onClick={() => handleCopyToClipboard(message.content)}
-                        >
-                          <Copy className="h-4 w-4" />
-                          <span className="sr-only">Copy code</span>
-                        </Button>
-                      )} */}
+                     
                     </div>
-                    {message.toolInvocations?.map((toolInvocation) => {
-                      const { toolName, toolCallId, state } = toolInvocation
-
-                      if (state === "result") {
-                        if (toolName === "displayWeather") {
-                          const { result } = toolInvocation
-
-                          return (
-                            <div key={toolCallId} className="rounded-lg border bg-card p-4 shadow-sm">
-                              <Weather {...result} />
-                            </div>
-                          )
-                        }
-                      } else {
-                        return (
-                          toolName === "displayWeather" && (
-                            <div key={toolCallId} className="flex items-center gap-2 rounded-lg border bg-card p-4">
-                              <Skeleton className="h-8 w-8 rounded-full" />
-                              <div className="space-y-2">
-                                <Skeleton className="h-4 w-[200px]" />
-                                <Skeleton className="h-4 w-[160px]" />
-                              </div>
-                            </div>
-                          )
-                        )
-                      }
-                    })}
                     {(message.experimental_attachments || []).filter(
                       (attachment) =>
                         attachment?.contentType?.startsWith("image/") ||

@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     system:prompt2,
     experimental_transform: smoothStream({
       delayInMs: 10, // optional: defaults to 10ms
-      chunking: 'line', // optional: defaults to 'word'
+      chunking: 'word', // optional: defaults to 'word'
     }),
     messages
     });
